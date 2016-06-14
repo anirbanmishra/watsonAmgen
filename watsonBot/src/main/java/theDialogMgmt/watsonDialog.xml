@@ -1,0 +1,57 @@
+<dialog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="WatsonDialogDocument_1.0.xsd">
+    <flow>
+        <folder label="Main" id="Main">        
+		    <output>
+				<prompt selectionType="RANDOM">
+					<item>Hello, welcome...I am AmBot. What may I call you??? </item>
+				</prompt>
+				<goto ref="getUserInput_1"/>
+			</output>
+		<getUserInput id="getUserInput_1">
+		<output>
+				<prompt selectionType="RANDOM">
+					<item>Hello {Username}...How may I help you today?? </item>
+				</prompt>
+				<goto ref="getUserInput_2"/>
+			</output>
+		</getUserInput>
+		<getUserInput id="getUserInput_2">
+		<search ref="folder_intent"/>
+		</getUserInput>
+		</folder>
+        <folder label="Library" id="Library">
+        	<folder label="Intent" id="folder_intent">
+        	<if>
+        		<cond varName="Intent" operator="Equals">Issues</cond>
+        		<goto ref="Issues_input"/>
+        	</if>
+				<input id="Issues_input">
+            		<grammar>
+            			<item>I forgot my password</item>
+						<item>Not able to update Java.</item>
+            		</grammar>
+            	<output>
+						<prompt selectionType="RANDOM">
+							<item>Can you tell me more about your problem???</item>
+						</prompt>
+					</output>
+            	</input>
+				<default>
+					<output>
+						<prompt selectionType="RANDOM">
+							<item>I am sorry, Can you please rephrase that??</item>
+							<item>I am sorry, Do you want me to start over.</item>
+							<item>I am sorry, I did not get that.</item>
+						</prompt>
+					</output>
+				</default>
+			</folder>
+        </folder>
+    </flow>
+   <variables>
+  <var_folder name="Home">
+       <var name="Intent" type="TEXT" description="Intent"/>
+       <var name="Username" type="TEXT" description="Username"/>
+  </var_folder>
+</variables>
+</dialog>
