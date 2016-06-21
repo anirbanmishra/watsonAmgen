@@ -1,9 +1,9 @@
 package watsonBot;
-import theDialogMgmt.dialogMgmt;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
@@ -14,7 +14,7 @@ import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.Class
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.Classifier;
 import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.Classifiers;
 
-import theChattingPanel.botPanel;
+import theDialogMgmt.dialogMgmt;
 
 public class watsonBot {
 	dialogMgmt dia;
@@ -30,7 +30,7 @@ public class watsonBot {
     
     //constructor
     
-	public watsonBot() throws IOException{
+	public watsonBot() throws IOException, ClassNotFoundException, SQLException{
 		Properties systemProps = System.getProperties();
 		readPasswordPath("C:/Users/amishr02/workspace/watsonBot/src/main/java/watsonBot/password&paths.txt");
 		systemProps.put("http.proxyHost", host);
@@ -41,7 +41,7 @@ public class watsonBot {
         service = new NaturalLanguageClassifier();
         dia=new dialogMgmt();
         dia.getDialogList();
-		setClassifierID();        
+		setClassifierID();
 		}
 	
 	//Read password and paths file to set variables

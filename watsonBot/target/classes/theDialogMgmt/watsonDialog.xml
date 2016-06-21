@@ -27,24 +27,45 @@
         	</if>
 				<input id="Issues_input">
             		<grammar>
-            			<item>I forgot my password</item>
-						<item>Not able to update Java.</item>
+            			<item>*</item>
             		</grammar>
             	<output>
 						<prompt selectionType="RANDOM">
-							<item>Can you tell me more about your problem???</item>
+							<item>Can you tell me the broader category of your problem???
+	If you cannot categorize please ask...What are the available categories?</item>
 						</prompt>
+						<goto ref="getUserInput_3"/>
 					</output>
             	</input>
-				<default>
-					<output>
-						<prompt selectionType="RANDOM">
-							<item>I am sorry, Can you please rephrase that??</item>
-							<item>I am sorry, Do you want me to start over.</item>
-							<item>I am sorry, I did not get that.</item>
-						</prompt>
-					</output>
-				</default>
+            	<getUserInput id="getUserInput_3">
+            	<input>
+            		<grammar>
+            			<item>software</item>
+            			<item>2</item>
+            		</grammar>
+            		<output>
+            		<prompt selectionType="RANDOM">
+            		<item>Please enter the number for the following sub category:-
+            		1. Related to Browsers.
+            		2. Software Installation.
+            		3. Uninstall Software.
+            		</item>
+            		</prompt>
+            		</output>
+            	</input>
+            	<input>
+            		<grammar>
+            		<item> $ available categories </item>
+            		</grammar>
+            		<output>
+            		<prompt selectionType="RANDOM">
+            		<item>Please enter the number for the following category:-
+            		{Category}
+            		</item>
+            		</prompt>
+            		</output>
+            	</input>
+		</getUserInput>
 			</folder>
         </folder>
     </flow>
@@ -52,6 +73,7 @@
   <var_folder name="Home">
        <var name="Intent" type="TEXT" description="Intent"/>
        <var name="Username" type="TEXT" description="Username"/>
+       <var name="Category" type="TEXT" description="Category"/>
   </var_folder>
 </variables>
 </dialog>

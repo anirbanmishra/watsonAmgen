@@ -1,9 +1,10 @@
 package theDialogMgmt;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,8 @@ import org.apache.http.client.ClientProtocolException;
 import com.ibm.watson.developer_cloud.dialog.v1.DialogService;
 import com.ibm.watson.developer_cloud.dialog.v1.model.Conversation;
 import com.ibm.watson.developer_cloud.dialog.v1.model.Dialog;
-import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.Classification;
+
+import databaseConnectivity.database;
 
 public class dialogMgmt {
 	DialogService service;
@@ -29,10 +31,11 @@ public class dialogMgmt {
 	static int client_id=0;
 	static int conversation_id=0;
 	static int count=0;
+	database db;
 
 	//constructor
 
-	public dialogMgmt() throws IOException{
+	public dialogMgmt() throws IOException, ClassNotFoundException, SQLException{
 		Properties systemProps = System.getProperties();
 		readPasswordPath("C:/Users/amishr02/workspace/watsonBot/src/main/java/watsonBot/password&paths.txt");
 		systemProps.put("http.proxyHost", host);
@@ -40,7 +43,8 @@ public class dialogMgmt {
 		systemProps.put("https.proxyHost", host);
 		systemProps.put("https.proxyPort", host);
 		System.setProperties(systemProps);
-		service = new DialogService();        
+		service = new DialogService();
+		db=new database();
 	}
 
 	//Sets up environment variables and paths for Dialog Service.
@@ -88,7 +92,7 @@ public class dialogMgmt {
 	public void createDialog(){
 		setDialogUsernamePass();
 		Dialog dialog = service.createDialog(dialog_name, new File(dialog_path));
-		System.out.println(dialog);			
+		//System.out.println(dialog);			
 	}
 
 	//Delete a particular dialog flow.
@@ -103,7 +107,7 @@ public class dialogMgmt {
 	public void updateDialog(){
 		setDialogUsernamePass();
 		Dialog dialog = service.updateDialog(dialog_id, new File(dialog_path));
-		System.out.println(dialog);
+		//System.out.println(dialog);
 	}
 
 	//Converse using a particular Dialog flow.
@@ -125,7 +129,6 @@ public class dialogMgmt {
 
 	public String getReply(String sentence, String top_class) throws ClientProtocolException, IOException{
 		Conversation reply;
-		System.out.println(client_id+ " "+ count);
 		if(client_id==0){
 			reply=dialogConverse(sentence);
 			count++;
@@ -137,6 +140,8 @@ public class dialogMgmt {
 		}
 		else{
 			updateProfile(top_class);
+			if (sentence.toLowerCase().contains("available categories"))
+				updateCategory();
 			reply=dialogConverse(sentence);
 		}
 		client_id=reply.getClientId();
@@ -153,20 +158,31 @@ public class dialogMgmt {
 		Map<String, String> profile = new HashMap<String,String>();
 		profile.put("Intent", top_class);
 		service.updateProfile(dialog_id, client_id, profile);
-		System.out.println(service.getProfile(dialog_id,client_id));
-		getProfile();
 	}
 	
 	//Update Username
 	
 	public void updateUsername(String sent){
 		setDialogUsernamePass();
-		updateDialog();
+		//updateDialog();
 		Map<String, String> profile = new HashMap<String,String>();
 		profile.put("Username", sent);
 		service.updateProfile(dialog_id, client_id, profile);
-		System.out.println(service.getProfile(dialog_id,client_id));
-		getProfile();
+	}
+	
+	//Update categories
+	
+	public void updateCategory(){
+		setDialogUsernamePass();
+		//updateDialog();
+		StringBuilder sb=new StringBuilder();
+		Map<String, String> profile = new HashMap<String,String>();
+		ArrayList<String> temp=db.getCategory();
+		for(int i=1; i<=temp.size();i++){
+			sb.append(i +"--->" +temp.get(i-1)+"\n\t\t");
+		}
+		profile.put("Category", sb.toString());
+		service.updateProfile(dialog_id, client_id, profile);
 	}
 
 	//get profile variables

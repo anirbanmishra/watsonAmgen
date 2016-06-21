@@ -1,11 +1,10 @@
 package theChattingPanel;
-import watsonBot.watsonBot;
-import theDialogMgmt.dialogMgmt;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -21,6 +20,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.xml.sax.SAXException;
 
 import theDialogMgmt.dialogMgmt;
+import watsonBot.watsonBot;
 
 public class botPanel extends JFrame implements KeyListener{
 	String quote;
@@ -34,12 +34,12 @@ public class botPanel extends JFrame implements KeyListener{
 			JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 			JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
 		);
-	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException{
+	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, SQLException{
 		new botPanel();
 	}
 	
-	public botPanel() throws IOException{
-		super("Chat Bot");
+	public botPanel() throws IOException, ClassNotFoundException, SQLException{
+		super("AmBot");
 		setSize(550,600);
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -79,15 +79,13 @@ public class botPanel extends JFrame implements KeyListener{
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+			}catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 			reply=reply.substring(1, reply.length()-1);
 			addText("-->Bot\t"+reply+"\n");
 		}
-			/*int rand=(int)Math.floor(Math.random()*output_array.length);
-			addText("\n-->Bot\t"+output_array[rand]);}
-				addText("\n-->Bot\tI did not quite get you.");
-
-			addText("\n");*/
 	}
 	
 	public String sentenceReceived(){

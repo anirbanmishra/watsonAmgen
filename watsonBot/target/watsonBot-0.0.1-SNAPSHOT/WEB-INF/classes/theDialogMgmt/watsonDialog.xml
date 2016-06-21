@@ -1,0 +1,79 @@
+<dialog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="WatsonDialogDocument_1.0.xsd">
+    <flow>
+        <folder label="Main" id="Main">        
+		    <output>
+				<prompt selectionType="RANDOM">
+					<item>Hello, welcome...I am AmBot. What may I call you??? </item>
+				</prompt>
+				<goto ref="getUserInput_1"/>
+			</output>
+		<getUserInput id="getUserInput_1">
+		<output>
+				<prompt selectionType="RANDOM">
+					<item>Hello {Username}...How may I help you today?? </item>
+				</prompt>
+				<goto ref="getUserInput_2"/>
+			</output>
+		</getUserInput>
+		<getUserInput id="getUserInput_2">
+		<search ref="folder_intent"/>
+		</getUserInput>
+		</folder>
+        <folder label="Library" id="Library">
+        	<folder label="Intent" id="folder_intent">
+        	<if>
+        		<cond varName="Intent" operator="Equals">Issues</cond>
+        		<goto ref="Issues_input"/>
+        	</if>
+				<input id="Issues_input">
+            		<grammar>
+            			<item>*</item>
+            		</grammar>
+            	<output>
+						<prompt selectionType="RANDOM">
+							<item>Can you tell me the broader category of your problem???
+	If you cannot categorize please ask...What are the available categories?</item>
+						</prompt>
+						<goto ref="getUserInput_3"/>
+					</output>
+            	</input>
+            	<getUserInput id="getUserInput_3">
+            	<input>
+            		<grammar>
+            			<item>software</item>
+            			<item>2</item>
+            		</grammar>
+            		<output>
+            		<prompt selectionType="RANDOM">
+            		<item>Please enter the number for the following sub category:-
+            		1. Related to Browsers.
+            		2. Software Installation.
+            		3. Uninstall Software.
+            		</item>
+            		</prompt>
+            		</output>
+            	</input>
+            	<input>
+            		<grammar>
+            		<item> $ available categories </item>
+            		</grammar>
+            		<output>
+            		<prompt selectionType="RANDOM">
+            		<item>Please enter the number for the following category:-
+            		1. Hardware
+            		2. Software
+            		</item>
+            		</prompt>
+            		</output>
+            	</input>
+		</getUserInput>
+			</folder>
+        </folder>
+    </flow>
+   <variables>
+  <var_folder name="Home">
+       <var name="Intent" type="TEXT" description="Intent"/>
+       <var name="Username" type="TEXT" description="Username"/>
+  </var_folder>
+</variables>
+</dialog>
