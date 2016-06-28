@@ -142,6 +142,8 @@ public class dialogMgmt {
 			updateProfile(top_class);
 			if (sentence.toLowerCase().contains("available categories"))
 				updateCategory();
+			else if(sentence.toLowerCase().contains("software")||sentence.toLowerCase().contains("hardware"))
+				updateSubCategory(sentence.toLowerCase());
 			reply=dialogConverse(sentence);
 		}
 		client_id=reply.getClientId();
@@ -185,6 +187,26 @@ public class dialogMgmt {
 		service.updateProfile(dialog_id, client_id, profile);
 	}
 
+	//Update sub category profile variable
+	
+	public void updateSubCategory(String sentence){
+		setDialogUsernamePass();
+		//updateDialog();
+		String subCategory="";
+		if(sentence.contains("hardware"))
+			subCategory="hardware";
+		else
+			subCategory="software";		
+		StringBuilder sb=new StringBuilder();
+		Map<String, String> profile = new HashMap<String,String>();
+		ArrayList<String> temp=db.getSubCategory(subCategory);
+		for(int i=1; i<=temp.size();i++){
+			sb.append(i +"--->" +temp.get(i-1)+"\n\t\t");
+		}
+		profile.put("Sub_category", sb.toString());
+		service.updateProfile(dialog_id, client_id, profile);
+	}
+	
 	//get profile variables
 
 	public void getProfile(){

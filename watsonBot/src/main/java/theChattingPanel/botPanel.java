@@ -74,13 +74,8 @@ public class botPanel extends JFrame implements KeyListener{
 			try {
 				reply = bot.passSentence(quote);
 			} catch (ClientProtocolException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			reply=reply.substring(1, reply.length()-1);

@@ -41,14 +41,12 @@
             	<input>
             		<grammar>
             			<item>software</item>
-            			<item>2</item>
+            			<item>hardware</item>
             		</grammar>
             		<output>
             		<prompt selectionType="RANDOM">
             		<item>Please enter the number for the following sub category:-
-            		1. Related to Browsers.
-            		2. Software Installation.
-            		3. Uninstall Software.
+            		{Sub_category}
             		</item>
             		</prompt>
             		</output>
@@ -74,6 +72,7 @@
        <var name="Intent" type="TEXT" description="Intent"/>
        <var name="Username" type="TEXT" description="Username"/>
        <var name="Category" type="TEXT" description="Category"/>
+       <var name="Sub_category" type="TEXT" description="Sub_category"/>
   </var_folder>
 </variables>
 </dialog>
