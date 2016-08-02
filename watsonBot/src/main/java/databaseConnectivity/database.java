@@ -15,7 +15,7 @@ public class database
 	public database() throws ClassNotFoundException, SQLException{
 		Class.forName("com.mysql.jdbc.Driver");
 		conn = null;
-		conn = DriverManager.getConnection("jdbc:mysql://localhost/issues","root", "");
+		conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/issues","root", "");
 		category=new ArrayList<String>();
 		subCategory=new ArrayList<String>();
 	}

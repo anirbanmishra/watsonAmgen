@@ -135,6 +135,7 @@ public class dialogMgmt {
 		}
 		else if(count==1){
 			updateUsername(sentence);
+			//powershellScripts.scripts();
 			reply=dialogConverse(sentence);
 			count++;
 		}
@@ -214,13 +215,10 @@ public class dialogMgmt {
 	}
 
 
-	/*public static void main(String args[]) throws IOException{
+	/*public static void main(String args[]) throws IOException, ClassNotFoundException, SQLException{
 			dialogMgmt dia=new dialogMgmt();
 			dia.getDialogList();
-			dia.updateDialog();
-			dia.getReply("Hello");
-			dia.updateProfile();
+			dia.updateDialog();}*/
 
-
-		}*/
+		
 }

@@ -10,7 +10,7 @@
 		<getUserInput id="getUserInput_1">
 		<output>
 				<prompt selectionType="RANDOM">
-					<item>Hello {Username}...How may I help you today?? </item>
+					<item>Hello {Username}...Please give permission to run script when asked...Give a short description of help you need?? </item>
 				</prompt>
 				<goto ref="getUserInput_2"/>
 			</output>
@@ -40,6 +40,18 @@
             	<getUserInput id="getUserInput_3">
             	<input>
             		<grammar>
+            			<item>null</item>
+            			<item>$ help</item>
+            		</grammar>
+            		<output>
+            		<prompt selectionType="RANDOM">
+            		<item>Please enter like Hardware/Software or ask for available categories</item>
+            		</prompt>
+            		<goto ref="getUserInput_3"/>
+            		</output>
+            	</input>
+            	<input>
+            		<grammar>
             			<item>software</item>
             			<item>hardware</item>
             		</grammar>
@@ -49,6 +61,7 @@
             		{Sub_category}
             		</item>
             		</prompt>
+            		<goto ref="getUserInput_4"/>
             		</output>
             	</input>
             	<input>
@@ -63,6 +76,172 @@
             		</prompt>
             		</output>
             	</input>
+		</getUserInput>
+		<getUserInput id="getUserInput_4">
+		<input>
+		<grammar>
+            			<item>null</item>
+            			<item>$ help</item>
+            		</grammar>
+            		<output>
+            		<prompt selectionType="RANDOM">
+            		<item>Please enter a number or part of sub category to proceed</item>
+            		</prompt>
+            		<goto ref="getUserInput_4"/>
+            		</output>
+		</input>
+		<input>
+		<grammar>
+            			<item>$ Internet</item>
+            			<item>2</item>
+            		</grammar>
+            		<output>
+            		<prompt selectionType="RANDOM">
+            		<item>Please provide a description of your issue</item>
+            		</prompt>
+            		<goto ref="getUserInput_5"/>
+            		</output>
+		</input>
+		</getUserInput>
+		<getUserInput id="getUserInput_5">
+		<input>
+		<grammar>
+            			<item>null</item>
+            			<item>help</item>
+            		</grammar>
+            		<output>
+            		<prompt selectionType="RANDOM">
+            		<item>Please enter phrases like Internet is slow/Unable to access sites/Browsing is slow</item>
+            		</prompt>
+            		<goto ref="getUserInput_5"/>
+            		</output>
+		</input>
+		<input>
+		<grammar>
+            			<item>$ slow</item>
+            			<item>$ access</item>
+            			<item>$ browsing</item>
+            		</grammar>
+            		<output>
+            		<prompt selectionType="RANDOM">
+            		<item>Is it with some websites or a general issue??</item>
+            		</prompt>
+            		<goto ref="getUserInput_6"/>
+            		</output>
+		</input>
+		</getUserInput>
+		<getUserInput id="getUserInput_6">
+		<input>
+		<grammar>
+            			<item>null</item>
+            			<item>$ help</item>
+            		</grammar>
+            		<output>
+            		<prompt selectionType="RANDOM">
+            		<item>Please respond with words like general/specific.</item>
+            		</prompt>
+            		<goto ref="getUserInput_6"/>
+            		</output>
+		</input>
+		<input>
+		<grammar>
+            			<item>$ general</item>
+            			<item>$ common</item>
+            		</grammar>
+            		<output>
+            		<prompt selectionType="RANDOM">
+            		<item>Solution</item>
+            		</prompt>
+            		<goto ref="getUserInput_7"/>
+            		</output>
+		</input>
+		<input>
+		<grammar>
+            			<item>$ specific</item>
+            			<item>$ some</item>
+            		</grammar>
+            		<output>
+            		<prompt selectionType="RANDOM">
+            		<item>Let me get an agent to assist you</item>
+            		</prompt>
+            		</output>
+		</input>
+		</getUserInput>
+		<getUserInput id="getUserInput_7">
+		<input>
+		<grammar>
+            			<item>null</item>
+            			<item>$ help</item>
+            		</grammar>
+            		<output>
+            		<prompt selectionType="RANDOM">
+            		<item>Please respond like Yes, its working/No, it is not fixed.</item>
+            		</prompt>
+            		<goto ref="getUserInput_7"/>
+            		</output>
+		</input>
+		<input>
+		<grammar>
+            			<item>$ yes</item>
+            			<item>$ is fixed</item>
+            			<item>$ working</item>
+            		</grammar>
+            		<output>
+            		<prompt selectionType="RANDOM">
+            		<item>Okay I will go ahead and close the issue. Can I help you with anything else??</item>
+            		</prompt>
+            		<goto ref="getUserInput_8"/>
+            		</output>
+		</input>
+		<input>
+		<grammar>
+            			<item>$ no</item>
+            			<item>$ is not fixed</item>
+            			<item>$ not working</item>
+            		</grammar>
+            		<output>
+            		<prompt selectionType="RANDOM">
+            		<item>OkayI will get an agent to assist you</item>
+            		</prompt>
+            		</output>
+		</input>
+		</getUserInput>
+		<getUserInput id="getUserInput_8">
+		<input>
+		<grammar>
+            			<item>null</item>
+            			<item>$ help</item>
+            		</grammar>
+            		<output>
+            		<prompt selectionType="RANDOM">
+            		<item>Please say Yes/No</item>
+            		</prompt>
+            		<goto ref="getUserInput_8"/>
+            		</output>
+		</input>
+		<input>
+		<grammar>
+            			<item>$ no</item>
+            			<item>$ that's it</item>
+            		</grammar>
+            		<output>
+            		<prompt selectionType="RANDOM">
+            		<item>Thank you...Have a Great Day</item>
+            		</prompt>
+            		</output>
+		</input>
+		<input>
+		<grammar>
+            			<item>$ yes</item>
+            			<item>$ ya</item>
+            		</grammar>
+            		<output>
+            		<prompt selectionType="RANDOM">
+            		<item>Okay What can I help you with??</item>
+            		</prompt>
+            		<goto ref="getUserInput_2"/>
+            		</output>
+		</input>
 		</getUserInput>
 			</folder>
         </folder>

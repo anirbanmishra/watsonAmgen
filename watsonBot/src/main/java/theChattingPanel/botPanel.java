@@ -1,64 +1,61 @@
 package theChattingPanel;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
+import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.SQLException;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.text.DefaultCaret;
+import javax.swing.JTextPane;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.xml.sax.SAXException;
 
+import sentiment.analyzeSentiment;
 import theDialogMgmt.dialogMgmt;
 import watsonBot.watsonBot;
-
 public class botPanel extends JFrame implements KeyListener{
 	String quote;
 	watsonBot bot;
 	dialogMgmt dia;
-	JPanel p=new JPanel(null);
-	JTextArea dialog=new JTextArea(20,48);
-	JTextArea input=new JTextArea(2,48);
+	StringBuilder sb=new StringBuilder();
+	JPanel p=new JPanel(new BorderLayout());
+	JTextPane dialog=new JTextPane();
+	JTextArea input=new JTextArea(3,50);
 	JScrollPane scroll=new JScrollPane(
-			dialog,
-			JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-			JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
-		);
+		dialog,
+		JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
+	);
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, SQLException{
 		new botPanel();
 	}
 	
 	public botPanel() throws IOException, ClassNotFoundException, SQLException{
 		super("AmBot");
-		setSize(550,600);
+		setSize(600,400);
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		DefaultCaret caret = (DefaultCaret)dialog.getCaret();
-	    caret.setUpdatePolicy(DefaultCaret.OUT_BOTTOM);		
+		
 		dialog.setEditable(false);
+		dialog.setContentType("text/html");
 		input.addKeyListener(this);
-		BufferedImage img = ImageIO.read(botPanel.class.getClassLoader().getResourceAsStream("images.png"));
-        JLabel label = new JLabel(new ImageIcon(img));
-		label.setBounds(0,400, 200, 200);
-		scroll.setBounds(530,0,16,400);
-		dialog.setBounds(0, 0,530, 397 );
-		input.setBounds(200,400,340,600);
-		p.add(scroll);
-		p.add(dialog);
-		p.add(input);
-		p.setBackground(new Color(100,80,10));
-		p.add(label);
-		add(p);				
+	
+		p.add(scroll,BorderLayout.CENTER);
+		p.add(input,BorderLayout.SOUTH);
+		p.setBackground(new Color(255,200,0));
+		add(p);		
 		setVisible(true);
 		bot=new watsonBot();
 	}
@@ -69,7 +66,10 @@ public class botPanel extends JFrame implements KeyListener{
 			input.setEditable(false);
 			quote=input.getText();
 			input.setText("");
-			addText("-->You:\t"+quote+"\n");
+			sb.append("<font size='5'>-->You:&nbsp;&nbsp;"+quote+"</font><br>");
+			dialog.setText(sb.toString());
+			if(quote.length()==0)
+				quote="null";			
 			String reply="";
 			try {
 				reply = bot.passSentence(quote);
@@ -79,7 +79,52 @@ public class botPanel extends JFrame implements KeyListener{
 				e1.printStackTrace();
 			}
 			reply=reply.substring(1, reply.length()-1);
-			addText("-->Bot\t"+reply+"\n");
+			if(reply.toLowerCase().equals("solution")){
+				System.out.println("Hi");
+				sb.append("<font size='5'>-->Bot:&nbsp;&nbsp;&nbsp;"+"<a href=\"C:/Users/amishr02/Desktop/test.hta\">Download Fix</a>"+"</font><br>Download the fix and let me know if the issue is fixed.<br>");
+				dialog.setText(sb.toString());
+				dialog.addHyperlinkListener(new HyperlinkListener() {
+				    public void hyperlinkUpdate(HyperlinkEvent e) {
+				        if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+				           System.out.println(e.getDescription());
+				           File f=new File(e.getDescription());
+				           try {
+							URL url=new URL(f.toURL().toString());
+							sun.net.www.protocol.file.FileURLConnection connection = null;
+							try {
+								connection = (sun.net.www.protocol.file.FileURLConnection) url.openConnection();
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							int filesize = connection.getContentLength(); 
+							float totalDataRead=0;
+							java.io.BufferedInputStream in = new java.io.BufferedInputStream(connection.getInputStream());
+							java.io.FileOutputStream fos = new java.io.FileOutputStream("test.hta");
+							java.io.BufferedOutputStream bout = new BufferedOutputStream(fos,1024); 
+							byte[] data = new byte[1024]; 
+							int i=0; 
+							while((i=in.read(data,0,1024))>=0) { 
+								totalDataRead=totalDataRead+i; 
+								bout.write(data,0,i);  }
+							bout.close(); 
+							in.close();
+							String[] cmd = {"C:\\WINDOWS\\system32\\cmd.exe","/c","start","test.hta"};
+							Runtime.getRuntime().exec(cmd);
+						} catch (MalformedURLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+				        }
+				    }
+				});
+				}
+			else {
+				sb.append("<font size='5'>-->Bot:&nbsp;&nbsp;&nbsp;"+reply+"</font><br>");
+				dialog.setText(sb.toString());}
 		}
 	}
 	

@@ -133,7 +133,7 @@ public class watsonBot {
 	public Classification classify(String classifier_id, String statement){
 		setNLPUsernamePass();
 		Classification classification=null;
-		if(getClassifierStatus(classifier_id).equals("AVAILABLE")){
+		if(getClassifierStatus(classifier_id).equals("AVAILABLE") && statement.length()>0 ){
 		classification = service.classify(classifier_id, statement);
 		}
 		return classification;
@@ -144,6 +144,7 @@ public class watsonBot {
 		setClassifierID();
 		Classification top_class=classify(classifier_id,sentence);
 		String reply=dia.getReply(sent,top_class.getTopClass());
+		System.out.println(reply);
 		return reply;
 	}
 }

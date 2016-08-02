@@ -1,0 +1,31 @@
+<head>
+<title>HTA Test</title>
+<HTA:APPLICATION 
+     APPLICATIONNAME="HTA Test"
+     SCROLL="yes"
+     SINGLEINSTANCE="yes"
+     WINDOWSTATE="maximize"
+>
+</head>
+
+<script language="VBScript">
+	Sub TestSub
+		 Set oShell = CreateObject("Shell.Application")  
+		 oShell.ShellExecute "powershell", "-executionpolicy bypass -file C:\Users\amishr02\Downloads\script2.ps1", "", "runas", 1
+		 Sleep 10000
+		 oShell.ShellExecute "powershell", "-executionpolicy bypass -file C:\Users\amishr02\Downloads\script3.ps1", "", "runas", 1
+		 window.close()
+	End Sub
+	 Sub Sleep(MSecs) 
+ Set fso = CreateObject("Scripting.FileSystemObject")
+  If Fso.FileExists("sleeper.vbs")=False Then
+  Set objOutputFile = fso.CreateTextFile("sleeper.vbs", True)
+  objOutputFile.Write "wscript.sleep WScript.Arguments(0)"
+  objOutputFile.Close
+  End If
+ CreateObject("WScript.Shell").Run "sleeper.vbs " & MSecs,1 , True
+ End Sub
+</script>
+
+<body onLoad="TestSub">
+</body>

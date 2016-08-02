@@ -10,18 +10,18 @@ import java.nio.file.StandardCopyOption;
 
 public class powershellScripts {
     @SuppressWarnings("deprecation")
-	public void clearCache() throws IOException {
+	public static void main(String args[]) throws IOException {
         Runtime runtime = Runtime.getRuntime();
-        File f=new File("C:/Users/amishr02/Downloads/Clear-IECachedData.ps1");
+        File f=new File("C:/Users/amishr02/Downloads/script3.ps1");
         URL url = f.toURL();
         InputStream in = url.openStream();
         String home = System.getProperty("user.home");
-        String download_home=home+"/Downloads/clearCache.ps1";
+        String download_home=home+"/Downloads/script.ps1";
         download_home=download_home.replace("\\", "/");
         Files.copy(in, Paths.get(download_home), StandardCopyOption.REPLACE_EXISTING);
         in.close();
         Process proc;    
-        String command="powershell "+download_home;
+        String command="powershell start-process powershell -verb runas -argument "+download_home;
         proc = runtime.exec(command);
         proc.getOutputStream().close();
     }
